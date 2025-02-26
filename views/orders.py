@@ -1,7 +1,7 @@
 import sqlite3
 import json
 
-def get_all_orders(url):
+def get_all_orders():
     with sqlite3.connect("./kneeldiamonds.sqlite3") as conn:
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
@@ -25,7 +25,7 @@ def get_all_orders(url):
 
     return serialized_orders
 
-def retrieve_order(pk, url):
+def retrieve_order(pk):
     with sqlite3.connect("./kneeldiamonds.sqlite3") as conn:
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()

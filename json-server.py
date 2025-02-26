@@ -12,9 +12,9 @@ class JSONServer(HandleRequests):
 
         if url["requested_resource"] == "orders":
             if url["pk"] != 0:
-                response_body = retrieve_order(url["pk"], url)
+                response_body = retrieve_order(url["pk"])
                 return self.response(response_body, status.HTTP_200_SUCCESS.value)
-            response_body = get_all_orders(url)
+            response_body = get_all_orders()
             return self.response(response_body, status.HTTP_200_SUCCESS.value)
         else:
             return self.response("", status.HTTP_404_CLIENT_ERROR_RESOURCE_NOT_FOUND.value)
