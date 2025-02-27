@@ -4,9 +4,9 @@ import json
 def get_all_orders():
     with sqlite3.connect("./kneeldiamonds.sqlite3") as conn:
         conn.row_factory = sqlite3.Row
-        cursor = conn.cursor()
+        db_cursor = conn.cursor()
 
-        cursor.execute("""
+        db_cursor.execute("""
         SELECT 
             o.id,
             o.metal_id,
@@ -15,7 +15,7 @@ def get_all_orders():
         FROM Orders o
         """)
 
-        query_results = cursor.fetchall()
+        query_results = db_cursor.fetchall()
 
         orders = []
         for row in query_results:
@@ -28,9 +28,9 @@ def get_all_orders():
 def retrieve_order(pk):
     with sqlite3.connect("./kneeldiamonds.sqlite3") as conn:
         conn.row_factory = sqlite3.Row
-        cursor = conn.cursor()
+        db_cursor = conn.cursor()
 
-        cursor.execute("""
+        db_cursor.execute("""
         SELECT
             o.id,
             o.metal_id,
@@ -40,7 +40,7 @@ def retrieve_order(pk):
         WHERE o.id = ?
         """, (pk,))
 
-        query_results = cursor.fetchone()
+        query_results = db_cursor.fetchone()
 
         serialized_order = json.dumps(dict(query_results))
 
@@ -48,9 +48,9 @@ def retrieve_order(pk):
 
 def create_order(order_data):
     with sqlite3.connect("./kneeldiamonds.sqlite3") as conn:
-        cursor = conn.cursor()
+        db_cursor = conn.cursor()
 
-        cursor.execute(
+        db_cursor.execute(
             """
             INSERT INTO Orders (metal_id, size_id, style_id)
             VALUES (?, ?, ?)
@@ -58,18 +58,19 @@ def create_order(order_data):
             (order_data['metal_id'], order_data['size_id'], order_data['style_id'])
         )
 
-    return True if cursor.rowcount > 0 else False
+    return True if db_cursor.rowcount > 0 else False
 
 def delete_order(pk):
     with sqlite3.connect("./kneeldiamonds.sqlite3") as conn:
-        cursor = conn.cursor()
+        db_cursor = conn.cursor()
 
-        cursor.execute(
+        db_cursor.execute(
             """
             DELETE FROM Orders WHERE id = ?
             """, (pk,)
         )
 
-        number_of_rows_deleted = cursor.rowcount
+        number_of_rows_deleted = db_cursor.rowcount
 
     return True if number_of_rows_deleted > 0 else False
+
